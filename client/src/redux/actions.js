@@ -1,20 +1,12 @@
-export function listMovies(movies) {
+export function login(user) {
   return {
-    type: 'LIST_MOVIES',
-    value: movies
+    type: 'LOGIN',
+    value: user
   }
 }
 
-export function createMovie(movie) {
+export function logout(movie) {
   return {
-    type: 'CREATE_MOVIE',
-    value: movie
-  }
-}
-
-export function deleteMovie(movieName) {
-  return {
-    type: 'DELETE_MOVIE',
-    value: movieName
+    type: 'LOGOUT'
   }
 }

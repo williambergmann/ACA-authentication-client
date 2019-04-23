@@ -1,43 +1,54 @@
 # MongoDB Introduction
 
 ## Setup
-Fork and clone this repo, then run `npm i` & `npm run start:dev`
+Fork and clone this repo
+
+Enter your connection string for `Mongoose` in the appropriate place in `index.js`
+
+Run `npm i` & `npm run start:dev`
 
 NOTE: notice the ":dev". Make sure you run the above command exactly as written
 
 ## Investigation
-Take a look at how the client folder is structured inside this project. We've put Create React App inside this project. 
+Look at the auth route (`routes/auth`) and controller (`controllers/auth`). Notice the SignUp function and how we created a hash for the password. 
 
-## Tickets CRUD
-Hints/Intructions are located in `express/controllers` and `express/routes` but are summarized here. You will be creating routes, controller functions, and mongoose functions (inside the controller functions) to access the data. 
+### Part 1 - Signup
 
+Once the application is running, sign up with a couple username/password combinations. Then navigate to your MongoDB Atlas database in the browser and look in the `auth` collection to see the users you just created.
 
-### Part 1 - GET (Read)
+### Part 2 - Login
 
-1. In the routes folder (`express/controllers/tickets.js`), create a route for getting all the movies/tickets from the db. Create a controller function to go along with that. Finally, use the appropriate mongoose method to retrieve items from the database. 
+Create a login route and a login controller function. On login, a `POST` request will be sent to `/auth/login` with the request body (you don't have to configure that part). See steps below:
 
+In the controller, use the `AuthModel` to `findOne` user by it's `userName` and `password`. Remember to hash the password first.
 
-### Part 2 - POST (Create)
+In the route, send back the appropriate response from the `Login` function. If the user exists, return a TOKEN containing the user data and using the string "secret" as the secret. Learn how to creat tokens here: https://www.npmjs.com/package/jsonwebtoken
 
-1. In the routes folder (`express/controllers/tickets.js`), create a route for creating a ticket. Create a controller function to go along with that. Finally, use the appropriate mongoose method to create/insert an item into database. 
+If the user doesn't exist, return a 404 status code and the string: "user could not be found"
 
-2. If done correctly, you should be able to "Create Movie" from the UI and it should show up in the list.
+If done correctly, you should notice that when you login, you are redirected to the dashboard page
 
-3. It should remain in the list when you refresh the page.
+### Part 3 - Maintaining state in the browser
 
+Notice that when you login, you are redirected to the dashboard page but when you refresh the page, the data is gone. Why?
 
-### Part 3 - DELETE (Delete)
+We need to store a cookie in the browser that tells our application a user is still logged in.
 
-1. In the routes folder (`express/controllers/tickets.js`), create a route for deleting a ticket by it's name. Create a controller function to go along with that. Finally, use the appropriate mongoose method to delete ONE item from database. 
+In the Login component under the client folder (`client/src/components/auth/Login.js`) find the word `token` on line 44. Right below that.. set a cookie with a name of `id_token` and a value of `token`. Also, set a `max-age` of 60 seconds
 
-2. If done correctly, you should be able to "Delete Movie" from the UI and it should be removed from the list.
+Setting cookies: https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
 
-3. It should remain removed from the list when the page is refreshed.
+Now, on next login, you should be able to inspect the window, navigate to the `Application` tab and dropdown the `cookies` folder. There you should see your new `id_token` cookie.
 
-### Part 4 - GET (Read) - Again
+Feel free to copy the token and paste it here to see it's contents: https://jwt.io/
 
-1. In the routes folder (`express/controllers/tickets.js`), create a route for getting one ticket by it's id. Create a controller function to go along with that. Finally, use the appropriate mongoose method to find ONE item from database. 
+Wait 1 mins and then refresh the page. Notice the cookie has expired.
 
-2. When doing this.. research the ObjectId property of mongoose, you will need it
+### Part 4 - React Private Routes
 
-3. At this point you should be able to click the "details" link next to each movie in the UI and see the details
+Now that the cookie is set, we want to create private routes that you cannot access unless you are logged in. Additionally, these routes will help us take the cookie from the browser and parse out the user on each request to a given component.
+
+In the router (`client/src/router.js`) create a PrivateRoute function and use it with the dashboard. Then, login and notice that when you refresh, you are still on the dashboard. Wait for the cookie to expire and refresh the page again. Were you redirected to the login screen?
+
+NOTE: You may have noticed when you refreshed that the data had disappeared again. We will talk about fixing that (making sure the user is always available when the cookie is) next time. 
+

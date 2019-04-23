@@ -1,40 +1,55 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import styled from 'styled-components'
-import MovieList from '../containers/MovieList'
-import MovieActions from '../containers/MovieActions'
+import Card from '@material-ui/core/Card';
+import CardHeader from '@material-ui/core/CardHeader';
+import CardContent from '@material-ui/core/CardContent';
+import CardActions from '@material-ui/core/CardActions';
+import Collapse from '@material-ui/core/Collapse';
+import IconButton from '@material-ui/core/IconButton';
+import SignUp from './auth/SignUp'
+import Login from '../containers/Login'
 
-const Center = styled.div`
+const Wrapper = styled.div`
   display: flex;
   justify-content: center;
 `
-const FlexWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`
 
 class Home extends Component {
-  componentDidMount() {
-    fetch('/api/tickets')
-      .then(res => res.json())
-      .then(movies => this.props.listMovies(movies))
-      .catch(() => this.props.listMovies([]))
-  }
+  state = { expanded: false };
+
+  handleExpandClick = () => {
+    this.setState(state => ({ expanded: !state.expanded }));
+  };
 
   render() {
     return (
-      <Fragment>
-        <Center>
-          <h1>Movie Tickets</h1>
-        </Center>
-        <Center>
-          <FlexWrapper>
-            <MovieList />
-            <MovieActions />
-          </FlexWrapper>
-        </Center>
-      </Fragment>
-    )
+      <Wrapper>
+        <Card>
+          <CardHeader
+            title="Welcome to the best app ever!"
+            subheader="Login"
+          />
+          <CardContent>
+            <Login />
+          </CardContent>
+          <CardActions disableActionSpacing>
+            <IconButton
+              onClick={this.handleExpandClick}
+              aria-expanded={this.state.expanded}
+              aria-label="Show more"
+            >
+              <span>Sign Up</span>
+            </IconButton>
+          </CardActions>
+          <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+            <CardContent>
+              <SignUp />
+            </CardContent>
+          </Collapse>
+        </Card>
+      </Wrapper>
+    );
   }
 }
 
-export default Home
+export default Home;

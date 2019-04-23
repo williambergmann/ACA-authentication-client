@@ -1,10 +1,9 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
-const Tickets = new Schema({
-  movieName: String,
-  description: String,
-  price: String
+const Auth = new Schema({
+  userName: String,
+  password: String
 })
 
-module.exports = { Tickets }
+module.exports = { Auth }

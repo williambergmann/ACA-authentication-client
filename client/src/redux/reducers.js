@@ -1,23 +1,17 @@
 import { combineReducers } from 'redux'
 
-const movies = (state = [], action) => {
-  // state = movies
-  let newState = [ ...state ]
+const user = (state = {}, action) => {
+  // state = ./state.js => user
   switch (action.type) {
-    case 'LIST_MOVIES':
+    case 'LOGIN':
       return action.value
-    case 'CREATE_MOVIE':
-      newState.push(action.value)
-      return newState
-    case 'DELETE_MOVIE':
-      const index = newState.findIndex(m => m.movieName === action.value)
-      newState.splice(index, 1)
-      return newState
+    case 'LOGOUT':
+      return {}
     default:
       return state
   }
 }
 
 export default combineReducers({
-  movies
+  user
 })

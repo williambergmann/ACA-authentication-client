@@ -1,7 +1,7 @@
 const express = require('express')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
-const TicketRoutes = require('./express/routes/tickets')
+const AuthRoutes = require('./express/routes/auth')
 
 mongoose.connect('mongodb+srv://admin:admin@cluster0-kn2s0.mongodb.net/test?retryWrites=true')
 
@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 app.use(bodyParser.json())
-app.use('/api/tickets', TicketRoutes)
+app.use('/auth', AuthRoutes)
 
 app.get('/', (req, res) => res.send('Default route!'))
 

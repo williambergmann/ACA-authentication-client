@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
-const { Tickets } = require('./schemas')
+const { Auth } = require('./schemas')
 
-const TicketsModel = mongoose.model('Ticket', Tickets)
+const AuthModel = mongoose.model('Auth', Auth, 'auth')
 
 module.exports = {
-  TicketsModel
+  AuthModel
 }
