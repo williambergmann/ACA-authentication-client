@@ -3,7 +3,8 @@ const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const AuthRoutes = require('./express/routes/auth')
 
-mongoose.connect(/* YOUR MONGO CONNECTION STRING */)
+mongoose.connect('mongodb+srv://william:admin@clusterfrick-oesdf.mongodb.net/test?retryWrites=true&w=majority')
+  .catch(err => console.log('MONGO ERROR', err))
 
 const port = process.env.PORT || 4001
 const app = express()

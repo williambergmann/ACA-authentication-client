@@ -50,5 +50,4 @@ Now that the cookie is set, we want to create private routes that you cannot acc
 
 In the router (`client/src/router.js`) create a PrivateRoute function and use it with the dashboard. Then, login and notice that when you refresh, you are still on the dashboard. Wait for the cookie to expire and refresh the page again. Were you redirected to the login screen?
 
-NOTE: You may have noticed when you refreshed that the data had disappeared again. We will talk about fixing that (making sure the user is always available when the cookie is) next time. 
-
+NOTE: You may have noticed when you refreshed that the data had disappeared again. We will talk about fixing that (making sure the user is always available when the cookie is) next time.
